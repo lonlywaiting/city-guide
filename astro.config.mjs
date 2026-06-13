@@ -4,6 +4,8 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
+  site: 'https://lonlywaiting.github.io',
+  base: '/city-guide',
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()]
