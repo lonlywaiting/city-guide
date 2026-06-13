@@ -62,7 +62,7 @@ const citiesData = cities.map(c => ({
           ))}
         </div>
         <div style="text-align: center; margin-top: 32px;">
-          <a href={`/${locale}/cities/`} style="color: #6b7280; text-decoration: none;">
+          <a href={`${import.meta.env.BASE_URL}${locale}/cities/`.replace(/\/+/g, '/').replace(/:\//,'://')} style="color: #6b7280; text-decoration: none;">
             {t.home.viewAll} →
           </a>
         </div>
