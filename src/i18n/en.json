@@ -1,0 +1,32 @@
+{
+  "nav": {
+    "home": "Home",
+    "explore": "Explore",
+    "about": "About"
+  },
+  "home": {
+    "title": "Discover the World's Most Beautiful Cities",
+    "subtitle": "Explore the unique charm of 20 cities",
+    "search": "Search cities or countries...",
+    "featured": "Featured Cities",
+    "viewAll": "View All"
+  },
+  "city": {
+    "population": "Population",
+    "language": "Language",
+    "currency": "Currency",
+    "timezone": "Timezone",
+    "bestSeason": "Best Season",
+    "info": "Basic Information",
+    "links": "Related Links"
+  },
+  "search": {
+    "noResults": "No cities found",
+    "trySearch": "Try searching",
+    "browseAll": "Browse all cities"
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "photos": "Photo credits"
+  }
+}

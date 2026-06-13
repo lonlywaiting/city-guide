@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CityCard from '../../components/CityCard.astro';
+import SearchBar from '../../components/SearchBar';
+import { getCollection } from 'astro:content';
+import { useTranslation } from '../../utils/i18n';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'zh' } },
+    { params: { lang: 'en' } }
+  ];
+}
+
+const { lang } = Astro.params;
+const locale = lang === 'en' ? 'en' : 'zh';
+const t = useTranslation(locale);
+
+const cities = await getCollection('cities');
+const featured = cities.slice(0, 6);
+const citiesData = cities.map(c => ({
+  id: c.id,
+  name: c.data.name,
+  nameEn: c.data.nameEn,
+  country: c.data.country,
+  countryEn: c.data.countryEn
+}));
+---
+
+<BaseLayout title={t.home.title} locale={locale}>
+  <div class="bg-gray-50 dark:bg-gray-900">
+    <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700" style="padding: 80px 0 30px;">
+      <div id="container" style="max-width: 1400px; margin: 0 auto; padding: 0 40px;">
+        <h1 class="text-gray-900 dark:text-white" style="font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 12px;">
+          {t.home.title}
+        </h1>
+        <p style="text-align: center; color: #6b7280; margin-bottom: 32px;">
+          {t.home.subtitle}
+        </p>
+        <div style="max-width: 100%; margin: 0 auto;">
+          <SearchBar client:load cities={citiesData} locale={locale} placeholder={t.home.search} />
+        </div>
+      </div>
+    </div>
+
+    <div style="padding: 30px 0 60px;">
+      <div id="container-cities" style="max-width: 1400px; margin: 0 auto; padding: 0 40px;">
+        <h2 class="text-gray-900 dark:text-white" style="font-size: 1.5rem; font-weight: 600; text-align: center; margin-bottom: 32px;">
+          {t.home.featured}
+        </h2>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;">
+          {featured.map((city) => (
+            <CityCard
+              name={city.data.name}
+              nameEn={city.data.nameEn}
+              country={city.data.country}
+              countryEn={city.data.countryEn}
+              image={city.data.image}
+              id={city.id}
+              locale={locale}
+            />
+          ))}
+        </div>
+        <div style="text-align: center; margin-top: 32px;">
+          <a href={`/${locale}/cities/`} style="color: #6b7280; text-decoration: none;">
+            {t.home.viewAll} →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function adjustContainerWidth() {
+      const width = window.innerWidth;
+      const maxWidth = width >= 1600 ? '1400px' : '1200px';
+      const containers = document.querySelectorAll('#container, #container-cities');
+      containers.forEach(container => {
+        if (container instanceof HTMLElement) {
+          container.style.maxWidth = maxWidth;
+        }
+      });
+    }
+    adjustContainerWidth();
+    window.addEventListener('resize', adjustContainerWidth);
+  </script>
+</BaseLayout>

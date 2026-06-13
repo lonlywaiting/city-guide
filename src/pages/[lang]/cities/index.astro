@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CityCard from '../../../components/CityCard.astro';
+import { getCollection } from 'astro:content';
+import { useTranslation } from '../../../utils/i18n';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'zh' } },
+    { params: { lang: 'en' } }
+  ];
+}
+
+const { lang } = Astro.params;
+const locale = lang === 'en' ? 'en' : 'zh';
+const t = useTranslation(locale);
+
+const cities = await getCollection('cities');
+
+// 洲名翻译映射
+const continentMap: Record<string, string> = {
+  '亚洲': 'Asia',
+  '欧洲': 'Europe',
+  '美洲': 'Americas',
+  '大洋洲': 'Oceania',
+  '非洲': 'Africa'
+};
+
+const grouped = cities.reduce((acc, city) => {
+  const continent = city.data.continent;
+  const continentKey = locale === 'en' ? (continentMap[continent] || continent) : continent;
+  if (!acc[continentKey]) acc[continentKey] = [];
+  acc[continentKey].push(city);
+  return acc;
+}, {} as Record<string, typeof cities>);
+---
+
+<BaseLayout title={`${t.nav.explore} - CityGuide`} locale={locale}>
+  <div style="background: #f9fafb;" class="dark:bg-gray-900">
+    <div id="cities-container" style="max-width: 1400px; margin: 0 auto; padding: 60px 40px;">
+      <div style="margin-bottom: 48px;">
+        <h1 style="font-size: 2rem; font-weight: 700; margin-bottom: 8px;" class="text-gray-900 dark:text-white">
+          {t.nav.explore}
+        </h1>
+        <p style="font-size: 1rem; color: #6b7280;">
+          {cities.length} {locale === 'zh' ? '个城市等待探索' : 'cities to explore'}
+        </p>
+      </div>
+
+      {Object.entries(grouped).map(([continent, continentCities]) => (
+        <section style="margin-bottom: 56px;">
+          <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 24px;" class="text-gray-900 dark:text-white">
+            {continent} ({continentCities.length})
+          </h2>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;">
+            {continentCities.map((city) => (
+              <CityCard
+                name={city.data.name}
+                nameEn={city.data.nameEn}
+                country={city.data.country}
+                countryEn={city.data.countryEn}
+                image={city.data.image}
+                id={city.id}
+                locale={locale}
+              />
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+
+  <script>
+    function adjustContainerWidth() {
+      const width = window.innerWidth;
+      const maxWidth = width >= 1600 ? '1400px' : '1200px';
+      const container = document.getElementById('cities-container');
+      if (container instanceof HTMLElement) {
+        container.style.maxWidth = maxWidth;
+      }
+    }
+    adjustContainerWidth();
+    window.addEventListener('resize', adjustContainerWidth);
+  </script>
+</BaseLayout>

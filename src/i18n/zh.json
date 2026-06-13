@@ -1,0 +1,32 @@
+{
+  "nav": {
+    "home": "首页",
+    "explore": "探索",
+    "about": "关于"
+  },
+  "home": {
+    "title": "发现世界上最美的城市",
+    "subtitle": "探索 20 个城市的独特魅力",
+    "search": "搜索城市或国家...",
+    "featured": "精选城市",
+    "viewAll": "查看全部"
+  },
+  "city": {
+    "population": "人口",
+    "language": "语言",
+    "currency": "货币",
+    "timezone": "时区",
+    "bestSeason": "最佳旅游季节",
+    "info": "基本信息",
+    "links": "相关链接"
+  },
+  "search": {
+    "noResults": "未找到相关城市",
+    "trySearch": "试试搜索",
+    "browseAll": "浏览所有城市"
+  },
+  "footer": {
+    "rights": "版权所有",
+    "photos": "图片来源"
+  }
+}

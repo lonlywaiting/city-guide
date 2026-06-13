@@ -1,0 +1,35 @@
+---
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import type { Locale } from '../utils/i18n';
+
+interface Props {
+  title: string;
+  locale: Locale;
+}
+
+const { title, locale } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang={locale}>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; overflow-x: hidden; width: 100%; }
+  </style>
+</head>
+<body class="font-[Inter] bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased">
+  <Navbar locale={locale} />
+  <main style="padding-top: 64px; min-height: 100vh;">
+    <slot />
+  </main>
+  <Footer locale={locale} />
+</body>
+</html>

@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CityCard from '../components/CityCard.astro';
+import { getCollection } from 'astro:content';
+
+const cities = await getCollection('cities');
+const featured = cities.slice(0, 6);
+---
+
+<BaseLayout title="404 - Page Not Found" locale="zh">
+  <div class="max-w-4xl mx-auto px-4 py-16 text-center">
+    <div class="mb-8">
+      <span class="text-8xl">🗺️</span>
+    </div>
+
+    <h1 class="text-4xl font-bold text-[#2C3E50] dark:text-white mb-4">
+      找不到这个页面
+    </h1>
+    <p class="text-xl text-gray-600 dark:text-gray-400 mb-8">
+      可能它还在路上...
+    </p>
+
+    <div class="flex gap-4 justify-center mb-16">
+      <a href="/zh/" class="px-6 py-3 bg-[#E74C3C] text-white rounded-lg hover:bg-[#c0392b] transition">
+        返回首页
+      </a>
+      <a href="/zh/cities/" class="px-6 py-3 border-2 border-[#2C3E50] dark:border-white text-[#2C3E50] dark:text-white rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+        浏览城市
+      </a>
+    </div>
+
+    <section>
+      <h2 class="text-2xl font-bold text-[#2C3E50] dark:text-white mb-6">或者试试这些热门城市</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {featured.map((city) => (
+          <CityCard
+            name={city.data.name}
+            nameEn={city.data.nameEn}
+            country={city.data.country}
+            image={city.data.image}
+            id={city.id}
+            locale="zh"
+          />
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>
